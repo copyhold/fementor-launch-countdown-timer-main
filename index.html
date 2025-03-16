@@ -1,0 +1,147 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+
+  <title>Frontend Mentor | Launch countdown timer</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { position: fixed; bottom: 10px; left: 10px; font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+		body {
+			background: url(./images/bg-stars.svg) 0 0/cover no-repeat, url(./images/pattern-hills.svg) 50% 100%/100% no-repeat, #1e1e2a;
+			color: #fff;
+			height: 100vh;
+			font-family: "Outfit", sans-serif;
+			font-size: 15px;
+			margin: 0;
+			text-align: center;
+			display: grid;
+			grid-auto-flow: rows;
+			grid-template-rows: 2fr 6fr 3fr;
+			align-items: center;
+		}
+		main {
+			display: grid;
+			grid-template-columns: repeat(4, 148px);
+			gap: 32px;
+			justify-content: center;
+			figure {
+				margin: 0;
+			}
+			figcaption {
+				text-transform: uppercase;
+				font-size: 14px;
+			}
+		}
+		nav.social {
+			display: flex;
+			justify-content: center;
+			gap: 30px;
+			a {
+				text-decoration: none;
+				transition: filter .5s;
+				&:hover {
+					filter: saturate(1410%) hue-rotate(95.7deg);
+				}
+			}
+			img {
+				display: block;
+			}
+		}
+  </style>
+	<script>
+		(() => {
+			const ELMNAME="countdown-counter";
+			document.head.insertAdjacentHTML(
+				'beforeend',
+				'<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">'
+			);
+			customElements.define(
+				ELMNAME,
+				class extends HTMLElement {
+					unit = 'day';
+					end = new Date();
+					constructor() {
+						super();
+						const shadowRoot = this.attachShadow({ mode: "open" });
+						shadowRoot.appendChild(document.createElement('p'));
+						const style = document.createElement('style');
+						style.textContent = `
+					p {
+					font-size: 64px;
+					font-weight: 900;
+					color: #fd5c85;
+					font-family: "Outfit", sans-serif;
+					font-optical-sizing: auto;
+					}
+					`;
+						shadowRoot.appendChild(style);
+					}
+					connectedCallback() {
+						this.unit = this.getAttribute('unit') || 'second';
+						this.end = new Date(this.getAttribute('end'));
+						this.shadowRoot.querySelector('p').innerText = this.getValue().toString().padStart(2, '0');
+						this.interval = setInterval(() => {
+							const value = this.getValue();
+							this.shadowRoot.querySelector('p').innerText = value.toString().padStart(2, '0');
+						}, 1000);
+					}
+					disconnectedCallback() {
+						clearInterval(this.interval);
+					}
+					getValue = () => {
+						const diff = Math.ceil((this.end - new Date()) / 1000);
+						const DAY = 24 * 60 * 60;
+						const HOUR = 60 * 60;
+						const MINUTE = 60;
+						const day = Math.floor(diff / DAY);
+						const hour = Math.floor((diff - DAY * day) / HOUR);
+						const minute = Math.floor((diff - DAY * day - HOUR * hour) / MINUTE);
+						const second = diff - DAY * day - HOUR * hour - MINUTE * minute;
+						return {
+							day, hour, minute, second
+						}[this.unit];
+					}
+				},
+			);
+		})();
+	</script>
+</head>
+<body>
+
+  <h1>We're launching soon</h1>
+	<main aria-role=main>
+		<figure>
+				<countdown-counter unit=day end="2025-03-30T07:46:28.842Z"/></countdown-counter>
+				<figcaption>Days</figcaption>
+			</figure>
+			<figure>
+				<countdown-counter unit=hour end="2025-03-30T07:46:28.842Z"/></countdown-counter>
+				<figcaption>Hours</figcaption>
+			</figure>
+			<figure>
+				<countdown-counter unit=minute end="2025-03-30T07:46:28.842Z"/></countdown-counter>
+				<figcaption>Minutes</figcaption>
+			</figure>
+			<figure>
+				<countdown-counter unit=second end="2025-03-30T07:46:28.842Z"></countdown-counter>
+				<figcaption>Seconds</figcaption>
+			</figure>
+	</main>
+	<nav class=social>
+		<a href="#"><img src="./images/icon-facebook.svg" alt="Facebook" /></a>
+		<a href="#"><img src="./images/icon-pinterest.svg" alt="Pinterest" /></a>
+		<a href="#"><img src="./images/icon-instagram.svg" alt="Instagram" /></a>
+	</nav>
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="https://www.frontendmentor.io/profile/copyhold">copyhold</a>.
+  </div>
+</body>
+</html>
