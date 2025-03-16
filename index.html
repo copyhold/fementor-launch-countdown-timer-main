@@ -37,6 +37,7 @@
 			figcaption {
 				margin-top: 2em;
 				text-transform: uppercase;
+				color: #8387aa;
 			}
 		}
 		nav.social {
@@ -87,7 +88,10 @@
 						border-radius: 12px;
 						overflow: clip;
 						box-shadow: 0 10px 0px 0px #1a1a24;
-						mask: radial-gradient(circle at 100% 50%, transparent 10px, red 10px);
+						mask:
+						radial-gradient(circle at 100% 50%, transparent 10px, red 10px),
+						radial-gradient(circle at 0% 50%, transparent 10px, red 10px);
+						mask-composite: intersect;
 					}
 					p {
 					grid-column: 1;
