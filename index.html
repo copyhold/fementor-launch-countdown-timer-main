@@ -22,21 +22,21 @@
 			margin: 0;
 			text-align: center;
 			display: grid;
-			grid-auto-flow: rows;
-			grid-template-rows: 2fr 6fr 3fr;
+			grid-template-rows: 2fr 4fr 2fr;
 			align-items: center;
 		}
 		main {
 			display: grid;
 			grid-template-columns: repeat(4, 148px);
+			align-self: start;
 			gap: 32px;
 			justify-content: center;
 			figure {
 				margin: 0;
 			}
 			figcaption {
+				margin-top: 2em;
 				text-transform: uppercase;
-				font-size: 14px;
 			}
 		}
 		nav.social {
@@ -60,7 +60,7 @@
 			const ELMNAME="countdown-counter";
 			document.head.insertAdjacentHTML(
 				'beforeend',
-				'<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">'
+				'<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,700;1,700&display=swap" rel="stylesheet">'
 			);
 			customElements.define(
 				ELMNAME,
@@ -70,15 +70,45 @@
 					constructor() {
 						super();
 						const shadowRoot = this.attachShadow({ mode: "open" });
-						shadowRoot.appendChild(document.createElement('p'));
+						const wrapper = document.createElement('div')
+						wrapper.appendChild(document.createElement('p'));
+						wrapper.appendChild(document.createElement('p'));
+						shadowRoot.appendChild(wrapper);
 						const style = document.createElement('style');
 						style.textContent = `
+					div {
+						font-family: "Red Hat Text", sans-serif;
+						display: grid;
+						grid-template-rows: 100%;
+						grid-template-rows: 100%;
+						gap: 0;
+						width: 140px;
+						height: 148px;
+						border-radius: 12px;
+						overflow: clip;
+						box-shadow: 0 10px 0px 0px #1a1a24;
+						mask: radial-gradient(circle at 100% 50%, transparent 10px, red 10px);
+					}
 					p {
+					grid-column: 1;
+					grid-row: 1;
 					font-size: 64px;
-					font-weight: 900;
+					font-weight: 700;
 					color: #fd5c85;
-					font-family: "Outfit", sans-serif;
 					font-optical-sizing: auto;
+					margin: 0;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					background: #34364f;
+					}
+					p:nth-child(2n+1) {
+					mask: linear-gradient(to bottom, transparent 50%, red 50%);
+					}
+					p:nth-child(2n) {
+					mask: linear-gradient(to bottom, red 50%, transparent 50%);
+					filter: brightness(0.85);
 					}
 					`;
 						shadowRoot.appendChild(style);
@@ -86,10 +116,11 @@
 					connectedCallback() {
 						this.unit = this.getAttribute('unit') || 'second';
 						this.end = new Date(this.getAttribute('end'));
-						this.shadowRoot.querySelector('p').innerText = this.getValue().toString().padStart(2, '0');
+						const formattedValue = this.getValue().toString().padStart(2, '0');
+						this.shadowRoot.querySelectorAll('p').forEach(elm => elm.innerText = formattedValue);
 						this.interval = setInterval(() => {
-							const value = this.getValue();
-							this.shadowRoot.querySelector('p').innerText = value.toString().padStart(2, '0');
+							const formattedValue = this.getValue().toString().padStart(2, '0');
+							this.shadowRoot.querySelectorAll('p').forEach(elm => elm.innerText = formattedValue);
 						}, 1000);
 					}
 					disconnectedCallback() {
