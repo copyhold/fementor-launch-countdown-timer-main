@@ -7,8 +7,6 @@ export class CounterComponent extends HTMLElement {
 		const wrapper = document.createElement('div')
 		wrapper.appendChild(document.createElement('p'));
 		wrapper.appendChild(document.createElement('p'));
-		wrapper.appendChild(document.createElement('p'));
-		wrapper.appendChild(document.createElement('p'));
 		shadowRoot.appendChild(wrapper);
 		const style = document.createElement('style');
 		style.textContent = `
@@ -18,8 +16,8 @@ export class CounterComponent extends HTMLElement {
 						grid-template-rows: 100%;
 						grid-template-rows: 100%;
 						gap: 0;
-						width: 140px;
-						height: 148px;
+						width: 100%;
+						aspect-ratio: 148/140;
 						box-shadow: 0 10px 0px 0px #1a1a24;
 						mask:
 						radial-gradient(circle at 100% 50%, transparent 10px, red 10px),
@@ -33,7 +31,7 @@ export class CounterComponent extends HTMLElement {
 					transform-style: preserve-3d;
 					grid-column: 1;
 					grid-row: 1;
-					font-size: 64px;
+					font-size: clamp(30px, 8vw, 64px);
 					font-weight: 700;
 					color: #fd5c85;
 					font-optical-sizing: auto;
@@ -47,34 +45,16 @@ export class CounterComponent extends HTMLElement {
 					transition: rotate .3s ease-in-out;
 					backface-visibility: hidden;
 					}
-					p:nth-child(3) ,
 					p:nth-child(1) {
 						mask: linear-gradient(to bottom, transparent 50%, red 50%);
 						border-radius: 0 0 12px 12px;
 					}
-					p:nth-child(2) ,
-					p:nth-child(4) {
+					p:nth-child(2) {
 						border-radius: 12px 12px 0 0;
 						mask: linear-gradient(to bottom, red 50%, transparent 50%);
 						filter: brightness(0.85);
 					}
-					p:nth-child(1) {
-						rotate: x 0deg;
-						order: 7;
-					}
-					p:nth-child(2) {
-						rotate: x calc(var(--rot) + 0deg);
-						order: 10;
-					}
-					p:nth-child(3) {
-						rotate: x calc(var(--rot) - 180deg);
-						order: 11;
-					}
-					p:nth-child(4) {
-						rotate: x 0deg;
-						order: 6;
-					}
-					`;
+		`;
 		shadowRoot.appendChild(style);
 	}
 	connectedCallback() {
@@ -82,14 +62,9 @@ export class CounterComponent extends HTMLElement {
 		this.end = new Date(this.getAttribute('end'));
 		this.rot = 0;
 		const formattedValue = this.getValue().toString().padStart(2, '0');
-		const nextFormattedValue = (1 + this.getValue()).toString().padStart(2, '0');
 		this.shadowRoot.querySelector('p:nth-child(1)').innerText = formattedValue;
 		this.shadowRoot.querySelector('p:nth-child(2)').innerText = formattedValue;
-		this.shadowRoot.querySelector('p:nth-child(3)').innerText = nextFormattedValue;
-		this.shadowRoot.querySelector('p:nth-child(4)').innerText = nextFormattedValue;
 		this.interval = setInterval(() => {
-			this.shadowRoot.querySelector('div').style.setProperty('--rot', `${this.rot}deg`);
-			this.rot -= 180;
 			const formattedValue = this.getValue().toString().padStart(2, '0');
 			this.shadowRoot.querySelectorAll('p').forEach(elm => elm.innerText = formattedValue);
 		}, 1000);

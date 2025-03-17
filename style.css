@@ -6,17 +6,19 @@ body {
 	height: 100vh;
 	font-family: "Outfit", sans-serif;
 	font-size: 15px;
-	margin: 0;
 	text-align: center;
 	display: grid;
 	grid-template-rows: 2fr 4fr 2fr;
 	align-items: center;
 }
+h1 {
+	margin: 0;
+}
 main {
 	display: grid;
-	grid-template-columns: repeat(4, 148px);
+	grid-template-columns: repeat(4, minmax(70px, 148px));
 	align-self: start;
-	gap: 32px;
+	gap: clamp(16px, 4vw, 32px);
 	justify-content: center;
 	figure {
 		margin: 0;
@@ -42,4 +44,10 @@ nav.social {
 		display: block;
 	}
 }
-
+@media (max-width: 475px) {
+	body {
+		background-position: 0, 73% 100%;
+		background-size: cover, auto 30vh;
+		grid-template-rows: 3fr 3fr 2fr;
+	}
+}
