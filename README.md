@@ -39,7 +39,7 @@ Users should be able to:
 - implement the logic of the calculations of the time units left
 - implement the base single counter
 - implement the styling of the counter element
-- create flapping cards
+- create flapping cards ( @TODO )
 - make it responsive
 
 ### Built with
