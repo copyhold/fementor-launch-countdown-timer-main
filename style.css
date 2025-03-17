@@ -1,0 +1,45 @@
+.attribution { position: fixed; bottom: 10px; left: 10px; font-size: 11px; text-align: center; }
+.attribution a { color: hsl(228, 45%, 44%); }
+body {
+	background: url(./images/bg-stars.svg) 0 0/cover no-repeat, url(./images/pattern-hills.svg) 50% 100%/100% no-repeat, #1e1e2a;
+	color: #fff;
+	height: 100vh;
+	font-family: "Outfit", sans-serif;
+	font-size: 15px;
+	margin: 0;
+	text-align: center;
+	display: grid;
+	grid-template-rows: 2fr 4fr 2fr;
+	align-items: center;
+}
+main {
+	display: grid;
+	grid-template-columns: repeat(4, 148px);
+	align-self: start;
+	gap: 32px;
+	justify-content: center;
+	figure {
+		margin: 0;
+	}
+	figcaption {
+		margin-top: 2em;
+		text-transform: uppercase;
+		color: #8387aa;
+	}
+}
+nav.social {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	a {
+		text-decoration: none;
+		transition: filter .5s;
+		&:hover {
+			filter: saturate(1410%) hue-rotate(95.7deg);
+		}
+	}
+	img {
+		display: block;
+	}
+}
+
